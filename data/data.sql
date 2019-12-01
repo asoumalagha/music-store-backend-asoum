@@ -83,4 +83,34 @@ INSERT INTO song(name, album_id) VALUES ('Bounce', 1);
 INSERT INTO song(name, album_id) VALUES ('Soldier side', 2);
 INSERT INTO song(name, album_id) VALUES ('IDK', 3);
 
+DROP TABLE IF EXISTS user;
+
+CREATE TABLE user(
+                     id INT UNIQUE NOT NULL AUTO_INCREMENT,
+                     name VARCHAR(50) NOT NULL,
+                     email VARCHAR(50) NOT NULL,
+                     password VARCHAR(50) NOT NULL,
+
+                     PRIMARY KEY (id),
+                     UNIQUE KEY ID_name(name),
+                     UNIQUE KEY ID_email(email)
+
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+INSERT INTO user(name, email, password) VALUES ('user', 'user@user.com', 'password');
+
+CREATE TABLE user_song(
+                            user_id INT NOT NULL,
+                            FOREIGN KEY (user_id) REFERENCES user(id),
+                            song_id INT NOT NULL,
+                            FOREIGN KEY (song_id) REFERENCES song(id)
+
+);
+
+INSERT INTO user_song(user_id, song_id) VALUES(1, 1);
+INSERT INTO user_song(user_id, song_id) VALUES(1, 2);
+INSERT INTO user_song(user_id, song_id) VALUES(1, 3);
+INSERT INTO user_song(user_id, song_id) VALUES(1, 4);
+
+
+
 

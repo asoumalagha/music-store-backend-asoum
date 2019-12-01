@@ -30,12 +30,19 @@ use Asoum\Person\Model\PersonModel;
 use Asoum\Person\Repository\PersonRepository;
 use Asoum\Song\Action\AddNewSongAction;
 use Asoum\Song\Action\DeleteSongAction;
+use Asoum\Song\Action\DeleteUserAction;
 use Asoum\Song\Action\GetAllSongAction;
 use Asoum\Song\Action\GetSongByAlbumIdAction;
 use Asoum\Song\Action\GetSongByIdAction;
+use Asoum\Song\Action\GetSongByUserIdAction;
+use Asoum\Song\Action\GetUserByIdAction;
 use Asoum\Song\Action\UpdateSongAction;
+use Asoum\Song\Action\UpdateUserAction;
 use Asoum\Song\Model\SongModel;
 use Asoum\Song\Repository\SongRepository;
+use Asoum\User\Action\AddNewUserAction;
+use Asoum\User\Model\UserModel;
+use Asoum\User\Repository\UserRepository;
 use Asoum\Utility\Action\ExceptionHandlerAction;
 use Asoum\Utility\Action\NotAllowedErrorHandlerAction;
 use Asoum\Utility\Action\NotFoundHandlerAction;
@@ -267,6 +274,10 @@ $container[GetSongByAlbumIdAction::class] = function ($container) {
     return new GetSongByAlbumIdAction($container[SongModel::class]);
 };
 
+$container[GetSongByUserIdAction::class] = function ($container) {
+    return new GetSongByUserIdAction($container[SongModel::class]);
+};
+
 $container[AddNewSongAction::class] = function ($container) {
     return new AddNewSongAction($container[SongModel::class]);
 };
@@ -277,6 +288,39 @@ $container[UpdateSongAction::class] = function ($container) {
 
 $container[DeleteSongAction::class] = function ($container) {
     return new DeleteSongAction($container[SongModel::class]);
+};
+
+//User settings
+
+$container[UserModel::class] = function ($container) {
+    return new UserModel(
+        $container['logger'],
+        $container[UserRepository::class]
+    );
+};
+
+$container[UserRepository::class] = function ($container) {
+    return new UserRepository(
+        $container['database']
+    );
+};
+
+//Song actions
+
+$container[GetUserByIdAction::class] = function ($container) {
+    return new GetUserByIdAction($container[UserModel::class]);
+};
+
+$container[AddNewUserAction::class] = function ($container) {
+    return new AddNewUserAction($container[UserModel::class]);
+};
+
+$container[UpdateUserAction::class] = function ($container) {
+    return new UpdateUserAction($container[UserModel::class]);
+};
+
+$container[DeleteUserAction::class] = function ($container) {
+    return new DeleteUserAction($container[SongModel::class]);
 };
 
 //App

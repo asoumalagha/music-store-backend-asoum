@@ -21,16 +21,28 @@ use Asoum\Person\Action\GetAllPersonAction;
 use Asoum\Person\Action\GetPersonByIdAction;
 use Asoum\Person\Action\GetPersonByBandIdAction;
 use Asoum\Person\Action\UpdatePersonAction;
+use Asoum\Song\Action\AddSongToUserAction;
+use Asoum\Song\Action\DeleteSongAction;
+use Asoum\Song\Action\UpdateUserAction;
+use Asoum\User\Action\AddNewUserAction;
 use Asoum\Utility\Middleware\AlbumValidationMiddleware;
 use Asoum\Utility\Middleware\BandValidationMiddleware;
 use Asoum\Utility\Middleware\NameValidationMiddleware;
-use Asoum\Song\Action\GetSongByIdAction;
-use Asoum\Song\Action\GetSongByAlbumIdAction;
+use Asoum\Song\Action\GetUserByIdAction;
+use Asoum\Song\Action\GetSongByUserIdAction;
 use Asoum\Song\Action\GetAllSongAction;
 use Asoum\Song\Action\AddNewSongAction;
-use Asoum\Song\Action\DeleteSongAction;
+use Asoum\Song\Action\DeleteUserAction;
 use Asoum\Song\Action\UpdateSongAction;
+use Asoum\Song\Action\GetSongByIdAction;
+use Asoum\Song\Action\GetSongByAlbumIdAction;
 use Asoum\Utility\Middleware\PersonValidationMiddleware;
+
+
+//Routes related to authentication
+$app->post('/auth/login', LoginAction::class); //IMPLEMENT
+$app->post('/auth/logout', LogoutAction::class); //IMPLEMENT
+
 
 //Routes related to Person
 
@@ -56,7 +68,7 @@ $app->get('/band/{id:[0-9]+}', GetBandByIdAction::class);
 $app->get('/band/{id:[0-9]+}/person', GetPersonByBandIdAction::class);
 
 $app->post('/band/{id:[0-9]+}/person', AddPersonToBandAction::class)
-    ->add(PersonValidationMiddleware::class); //IMPLEMENT
+    ->add(PersonValidationMiddleware::class);
 $app->post('/band', AddNewBandAction::class)
     ->add(NameValidationMiddleware::class);
 
@@ -94,8 +106,27 @@ $app->post('/song', AddNewSongAction::class)
     ->add(NameValidationMiddleware::class)
     ->add(AlbumValidationMiddleware::class);
 
+
 $app->put('/song/{id:[0-9]+}', UpdateSongAction::class)
     ->add(NameValidationMiddleware::class)
     ->add(AlbumValidationMiddleware::class);
 
 $app->delete('/song/{id:[0-9]+}', DeleteSongAction::class);
+
+//Routes related to User
+$app->get('/user/{id:[0-9]+}', GetUserByIdAction::class);
+$app->get('/user/{id:[0-9]+}/song', GetSongByUserIdAction::class);
+
+$app->post('/user', AddNewUserAction::class)
+    ->add(UserNameValidationMiddleware::class) //TODO IMPLEMENT UserNameValidationMiddleware
+    ->add(PasswordValidationMiddleware::class) //TODO IMPLEMENT PasswordValidationMiddleware
+    ->add(EmailValidationMiddleware::class); //TODO IMPLEMENT EmailValidationMiddleware
+
+$app->post('/user/{id:[0-9]+}/song', AddSongToUserAction::class)
+    ->add(SongValidationMiddleware::class); //TODO IMPLEMENT SongValidationMiddleware
+
+$app->put('/user/{id:[0-9]+}', UpdateUserAction::class)
+    ->add(UserNameValidationMiddleware::class)
+    ->add(PasswordValidationMiddleware::class);
+
+$app->delete('/user/{id:[0-9]+}', DeleteUserAction::class);
