@@ -1,14 +1,14 @@
 <?php
 
-declare(strict_types=1);
 
 namespace Asoum\Song\Action;
+
 
 use Asoum\Song\Model\SongModel;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class GetSongByUserIdAction
+class DeleteSongFromUser
 {
     private $songModel;
 
@@ -18,7 +18,11 @@ class GetSongByUserIdAction
     }
     public function __invoke(Request $request, Response $response, array $args = []): Response
     {
-        $result = $this->songModel->getSongByUserId((int)$args['id']);
-        return $response->withJson($result);
+        $jsonData = $request->getParsedBody();
+        $result = $this->songModel->deleteSongFromUser(
+            (int)$args['id'],
+            (int)$jsonData['song']
+        );
+        return $response->withJson(['success' => $result]);
     }
 }

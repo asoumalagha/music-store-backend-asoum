@@ -23,6 +23,7 @@ use Asoum\Person\Action\GetPersonByBandIdAction;
 use Asoum\Person\Action\UpdatePersonAction;
 use Asoum\Song\Action\AddSongToUserAction;
 use Asoum\Song\Action\DeleteSongAction;
+use Asoum\Song\Action\DeleteSongFromUser;
 use Asoum\Song\Action\UpdateUserAction;
 use Asoum\User\Action\AddNewUserAction;
 use Asoum\Utility\Middleware\AlbumValidationMiddleware;
@@ -51,6 +52,9 @@ $app->get('/person/{id:[0-9]+}', GetPersonByIdAction::class);
 $app->get('/person/{id:[0-9]+}/band', GetBandByPersonIdAction::class);
 
 
+
+
+
 $app->post('/person', AddNewPersonAction::class)
     ->add(NameValidationMiddleware::class);
 
@@ -66,6 +70,8 @@ $app->delete('/person/{id:[0-9]+}', DeletePersonAction::class);
 $app->get('/band', GetAllBandAction::class);
 $app->get('/band/{id:[0-9]+}', GetBandByIdAction::class);
 $app->get('/band/{id:[0-9]+}/person', GetPersonByBandIdAction::class);
+
+
 
 $app->post('/band/{id:[0-9]+}/person', AddPersonToBandAction::class)
     ->add(PersonValidationMiddleware::class);
@@ -84,6 +90,9 @@ $app->delete('/band/{id:[0-9]+}/person', DeletePersonFromBandAction::class)
 
 $app->get('/album', GetAllAlbumAction::class);
 $app->get('/album/{id:[0-9]+}', GetAlbumByIdAction::class);
+$app->get('/album/{id:[0-9]+}/song', GetSongByAlbumIdAction::class)
+    ->add(SongValidationMiddleware::class);
+
 
 $app->post('/album', AddNewAlbumAction::class)
     ->add(NameValidationMiddleware::class)
@@ -100,7 +109,7 @@ $app->delete('/album/{id:[0-9]+}', DeleteAlbumAction::class);
 //Routes related to Song
 $app->get('/song', GetAllSongAction::class);
 $app->get('/song/{id:[0-9]+}', GetSongByIdAction::class);
-$app->get('/album/{id:[0-9]+}/song', GetSongByAlbumIdAction::class);
+
 
 $app->post('/song', AddNewSongAction::class)
     ->add(NameValidationMiddleware::class)
@@ -116,6 +125,9 @@ $app->delete('/song/{id:[0-9]+}', DeleteSongAction::class);
 //Routes related to User
 $app->get('/user/{id:[0-9]+}', GetUserByIdAction::class);
 $app->get('/user/{id:[0-9]+}/song', GetSongByUserIdAction::class);
+$app->get('/album/{id:[0-9]+}/song', GetSongByAlbumIdAction::class)
+    ->add(SongValidationMiddleware::class);
+
 
 $app->post('/user', AddNewUserAction::class)
     ->add(UserNameValidationMiddleware::class) //TODO IMPLEMENT UserNameValidationMiddleware
@@ -127,6 +139,9 @@ $app->post('/user/{id:[0-9]+}/song', AddSongToUserAction::class)
 
 $app->put('/user/{id:[0-9]+}', UpdateUserAction::class)
     ->add(UserNameValidationMiddleware::class)
+    ->add(EmailValidationMiddleware::class)
     ->add(PasswordValidationMiddleware::class);
 
 $app->delete('/user/{id:[0-9]+}', DeleteUserAction::class);
+$app->delete('/user/{id:[0-9]+}/song', DeleteSongFromUser::class)
+    ->add(SongValidationMiddleware::class);

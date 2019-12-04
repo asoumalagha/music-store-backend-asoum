@@ -21,9 +21,6 @@ class DeletePersonFromBandAction
     public function __invoke(Request $request, Response $response, array $args = []): Response
     {
         $jsonData = $request->getParsedBody();
-        if (!$jsonData['person']) {
-            return $response->withJson(['success' => false]);
-        }
         $result = $this->bandModel->deletePersonFromBand(
             (int)$args['id'],
             (int)$jsonData['person']
