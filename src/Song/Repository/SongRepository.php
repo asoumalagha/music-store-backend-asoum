@@ -71,6 +71,37 @@ class SongRepository
         $query->execute();
     }
 
+    public function addSongToUser(int $id, int $song): void
+    {
+        $query = $this->database->prepare('INSERT INTO user_song(user_id, song_id) VALUES (:user, :song)');
+        $query->bindParam('user', $id);
+        $query->bindParam('song', $song);
+        $query->execute();
+    }
+
+    public function deleteSongFromUser(int $id, int $song): void
+    {
+        $query = $this->database->prepare('DELETE FROM user_song WHERE user_id=:id AND song_id=:song;');
+        $query->bindParam('id', $id);
+        $query->bindParam('song', $song);
+        $query->execute();
+    }
+
+    public function getSongByUserId(int $id): array
+    {
+        $query = $this->database->prepare(
+            'SELECT * FROM song 
+                       INNER JOIN user_song 
+                       ON song.id = user_song.song_id
+                       WHERE user_song.user_id = :id
+                       GROUP BY song.id'
+        );
+        $query->bindParam('id', $id);
+        $query->execute();
+        $songs = $query->fetchAll();
+        return $this->createSongEntities($songs);
+    }
+
     private function createSongEntity(array $song): SongEntity
     {
         return new SongEntity(
@@ -88,4 +119,6 @@ class SongRepository
         }
         return $results;
     }
+
+
 }

@@ -125,7 +125,7 @@ $app->delete('/song/{id:[0-9]+}', DeleteSongAction::class);
 //Routes related to User
 $app->get('/user/{id:[0-9]+}', GetUserByIdAction::class);
 $app->get('/user/{id:[0-9]+}/song', GetSongByUserIdAction::class);
-$app->get('/album/{id:[0-9]+}/song', GetSongByAlbumIdAction::class)
+$app->get('/user/{id:[0-9]+}/song', GetSongByAlbumIdAction::class)
     ->add(SongValidationMiddleware::class);
 
 

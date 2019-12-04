@@ -14,12 +14,12 @@ class UserEntity implements JsonSerializable
     private $email;
     private $password;
 
-    public function __construct(int $id, string $name, string $email, string $password)
+    public function __construct(int $id, string $name, string $email)
     {
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
-        $this->password = $password;
+;
     }
 
     public function getId(): int
@@ -37,18 +37,12 @@ class UserEntity implements JsonSerializable
         return $this->email;
     }
 
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
     public function jsonSerialize(): array
     {
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'email' => $this->email,
-            'password' => $this->password
+            'email' => $this->email
         ];
     }
 }

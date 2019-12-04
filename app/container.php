@@ -305,7 +305,7 @@ $container[UserRepository::class] = function ($container) {
     );
 };
 
-//Song actions
+//User actions
 
 $container[GetUserByIdAction::class] = function ($container) {
     return new GetUserByIdAction($container[UserModel::class]);

@@ -62,4 +62,25 @@ class SongModel
         $this->logger->info('Song ' . $id . 'is deleted.');
         return true;
     }
+
+    public function addSongToUser(int $id, int $song): bool
+    {
+        $this->songRepository->addSongToUser($id, $song);
+        $this->logger->info('Song ' . $song . 'added to user ' . $id);
+        return true;
+    }
+
+    public function deleteSongFromUser(int $id, int $song): bool
+    {
+        $this->songRepository->deleteSongFromUser($id, $song);
+        $this->logger->info('Song ' . $song . 'deleted from user ' . $id);
+        return true;
+    }
+
+    public function getSongByUserId(int $id): array
+    {
+        $result = $this->songRepository->getSongByUserId($id);
+        $this->logger->info('User ' . $id . 's songs are found');
+        return $result;
+    }
 }
